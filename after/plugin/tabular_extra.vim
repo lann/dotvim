@@ -1,0 +1,2 @@
+AddTabularPattern colon /:\zs
+
