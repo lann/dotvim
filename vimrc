@@ -1,10 +1,10 @@
-call pathogen#infect() 
+call pathogen#infect()
 
 " Highlighting
 syntax on
 colorscheme inkpot
-hi CursorLine cterm=NONE ctermbg=238
 set cursorline
+hi CursorLine cterm=NONE ctermbg=238
 match ErrorMsg '\%>80v.\+'
 
 " Search
@@ -25,9 +25,20 @@ imap [26~ :tabnext
 
 " Statusline
 set laststatus=2
-set statusline=%w%h%{fugitive#statusline()}\ %f\ %m%=\ <%0B>\ %3l,%2c\ \ %P
+set statusline=%w%h%{fugitive#statusline()}\ %f\ %q%m%r%=%y\ <%02B>\ %3l,%2c\ \ %P
+
+" Code cleanup
+function! StripTrailingSpaces()
+  let v = winsaveview()
+  silent! %s/\s\+$//e
+  call histdel('/', -1)
+  call winrestview(v)
+endfunction
+autocmd FileType ruby,eruby,haml,html,javascript,css,scss
+    \ autocmd BufWritePre <buffer> call StripTrailingSpaces()
 
 " Misc
+set autoread
 set dir=~/.vim/tmp//
 set encoding=utf-8
 set wildmenu wildmode=list:longest
